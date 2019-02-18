@@ -1,25 +1,50 @@
 <!doctype HTML>
 <html>
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="styles.css"/>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.6/dist/vue.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.0/dist/showdown.min.js"></script>
     <script type="text/javascript">
         window.MathJax = {
-          tex2jax: {
-            inlineMath: [ ['$','$'] ],
-            displayMath: [ ['$$','$$'] ],
-            processEscapes: true
-          },
-          equationNumbers: {
-              autoNumber: "all"
-          }
+            tex2jax: {
+                inlineMath: [ ['$','$'] ],
+                displayMath: [ ['$$','$$'] ],
+                processEscapes: true
+            }
         };
       </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML" async></script>
-    <script src="main.js"></script>
+
 </head>
 <body>
-    When $a \ne 0$, there are two solutions to $ax^2 + bx + c = 0$ and they are
-    $$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$
+    <template id="article-sample" data-autoregister-props="article">
+        <span>{{ article.title }}</span>
+    </template>
+
+    <div id="vue-container">
+        <aside>
+            <div id="profile-photo" v-bind:style="{ backgroundImage: 'url(' + profile.photo + ')'}"></div>
+            <h3>{{ profile.name }}</h3>
+            <div>{{ profile.description }}</div>
+            <ul class="horizontal">
+                    <li><a target="_blank" href="https://github.com/nikoladimitroff"><i class="fab fa-github"></i></a></li>
+                    <li><a target="_blank" href="https://stackoverflow.com/users/1115693/nikola-dimitroff"><i class="fab fa-stack-overflow"></i></a></li>
+                    <li><a target="_blank" href="https://bg.linkedin.com/in/nikoladimitroff"><i class="fab fa-linkedin"></i></a></li>
+                    <li><a target="_blank" href="https://twitter.com/nikoladimitroff"><i class="fab fa-twitter"></i></a></li>
+                </ul>
+        </aside>
+        <main>
+            <ul>
+                <li v-for="article in articles">
+                    <article-sample v-bind:article="article"></article-sample>
+                </li>
+            </ul>
+        </main>
+    </div>
+    <script src="main.js"></script>
 </body>
 </html>
