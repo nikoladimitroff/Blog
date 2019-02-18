@@ -1,13 +1,28 @@
+const DateFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
 let model = {
     profile: {
-        photo: "foo.png",
+        photo: "https://dimitroff.bg/cv/images/portrait.png",
         name: "Nikola Dimitroff",
         description: "Ulalala"
     },
     articles: [{
-        title: "Foo",
-        description: "Foodilalalala",
-        }
+            title: "Foo",
+            description: "Foodilalalala",
+            publishDate: new Date()
+        },{
+            title: "Foo",
+            description: "Foodilalalala",
+            publishDate: new Date()
+        },{
+            title: "Foo",
+            description: "Foodilalalala",
+            publishDate: new Date()
+        },{
+            title: "Foo",
+            description: "Foodilalalala",
+            publishDate: new Date()
+        },
     ]
 };
 

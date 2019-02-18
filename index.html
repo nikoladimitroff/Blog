@@ -21,13 +21,19 @@
 
 </head>
 <body>
-    <template id="article-sample" data-autoregister-props="article">
-        <span>{{ article.title }}</span>
+    <template id="article-summary" data-autoregister-props="article">
+        <div class="article-summary">
+            <h3>{{ article.title }}</h3>
+            <span>{{ article.publishDate.toLocaleDateString("en-UK", { year: 'numeric', month: 'long', day: 'numeric' }) }}</span>
+            <br/>
+            <div class="description">{{ article.description }}</div>
+            <a>Read more</a>
+        </div>
     </template>
 
     <div id="vue-container">
         <aside>
-            <div id="profile-photo" v-bind:style="{ backgroundImage: 'url(' + profile.photo + ')'}"></div>
+            <img id="profile-photo" v-bind:src="profile.photo"/>
             <h3>{{ profile.name }}</h3>
             <div>{{ profile.description }}</div>
             <ul class="horizontal">
@@ -40,7 +46,7 @@
         <main>
             <ul>
                 <li v-for="article in articles">
-                    <article-sample v-bind:article="article"></article-sample>
+                    <article-summary v-bind:article="article"></article-summary>
                 </li>
             </ul>
         </main>

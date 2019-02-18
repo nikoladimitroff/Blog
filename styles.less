@@ -1,8 +1,48 @@
+/* Theme */
+@basic-text-color: black;
+@basic-background-color: snow;
+@header-font-family: Verdana;
+@text-font-family: "Segoe UI";
+
+/* Common classes */
+ul.horizontal {
+    display: flex;
+    > li {
+        display: inline-block;
+        list-style-type: none;
+    }
+}
+
+/* Normalization */
 html, body, #vue-container {
     margin: 0;
     padding: 0;
     width: 100vw;
     height: 100vh;
+    color: @basic-text-color;
+    background-color: @basic-background-color;
+    font-family: @text-font-family;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: @header-font-family;
+}
+
+/* Screens */
+#vue-container {
+    padding-top: 5vh;
+    display: flex;
+}
+
+aside {
+    height: 100%;
+    margin-left: 1vw;
+    width: 15vw;
+}
+#profile-photo {
+    border-radius: 50%;
+    border: 3px solid @basic-text-color;
+    width: 75%;
+    max-height: 75%;
 }
 
 article {
