@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="styles.css"/>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.6/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router@3.0.2/dist/vue-router.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.0/dist/showdown.min.js"></script>
     <script type="text/javascript">
@@ -28,6 +29,11 @@
             <br/>
             <div class="description">{{ article.description }}</div>
             <a>Read more</a>
+            <router-link v-bind:to="'/article/' + article.articleUrl">Read more</router-link>
+        </div>
+    </template>
+    <template id="article-display" data-autoregister-props="article">
+        <div v-html="article.renderedContent">
         </div>
     </template>
 
@@ -50,6 +56,8 @@
                 </li>
             </ul>
         </main>
+        <router-view class="view"></router-view>
+
     </div>
     <script src="main.js"></script>
 </body>
