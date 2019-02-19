@@ -5,7 +5,7 @@ class Article {
         this.title = title;
         this.description = description;
         this.publishDate = new Date();
-        this.content = "#Heya\r\n*foo\r\n*bar\r\n![puppy](resources/puppy.jpg)";
+        this.content = undefined;
     }
     get articleUrl() {
         return this.title.toLowerCase().replace(/ /g, '%20');
@@ -13,6 +13,27 @@ class Article {
     get renderedContent() {
         return new showdown.Converter().makeHtml(this.content);
     }
+}
+
+function loadFile(url) {
+    var xhr = new XMLHttpRequest();
+
+    const promise = new Promise((resolve, reject) => {
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                if (xhr.status == 200) {
+                    resolve(xhr.responseText);
+                }
+                else {
+                    reject(xhr.status);
+                }
+            }
+        }
+    });
+
+    xhr.open("GET", url, true);
+    xhr.send();
+    return promise;
 }
 
 let model = {
@@ -29,6 +50,11 @@ let model = {
     ],
     getArticleByUrl: function (url) {
         return this.articles.find(a => a.articleUrl === url);
+    },
+    loadArticle: async function (article) {
+        if (!article.content) {
+            article.content = await loadFile("/articles/" + article.title + "/content.md");
+        }
     }
 };
 
@@ -66,6 +92,7 @@ function main() {
                     if (!article) {
                         next("/page-not-found");
                     } else {
+                        model.loadArticle(article);
                         next();
                     }
                 }
