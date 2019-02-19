@@ -11,8 +11,7 @@ class Article {
         return this.title.toLowerCase().replace(/ /g, '%20');
     }
     get renderedContent() {
-        const options = {strikethrough: true, tasklists: true, openLinksInNewWindow: true, omitExtraWLInCodeBlocks: true, tables: true};
-        return new showdown.Converter(options).makeHtml(this.content);
+        return new showdown.Converter().makeHtml(this.content);
     }
 }
 
@@ -28,10 +27,8 @@ let model = {
         new Article("Foo", "Foodilalallala"),
         new Article("Foo", "Foodilalallala"),
     ],
-    getArticleByUrl: function (router) {
-        return {
-            article: this.articles.find(a => a.articleUrl === router.params.url)
-        };
+    getArticleByUrl: function (url) {
+        return this.articles.find(a => a.articleUrl === url);
     }
 };
 
@@ -46,14 +43,43 @@ function registerComponents() {
     }
 }
 
+function initShowdown() {
+    showdown.setOption("tables", true);
+    showdown.setOption("strikeThrough", true);
+    showdown.setOption("tasklists", true);
+    showdown.setOption("openLinksInNewWindow", true);
+    showdown.setOption("omitExtraWLInCodeBlocks", true);
+}
+
 function main() {
     Vue.config.devtools = true;
+    initShowdown();
     registerComponents();
 
-    const articleComponent = Vue.options.components["article-display"];
     const router = new VueRouter({
-        routes: [
-            { path: '/article/:url', component: articleComponent, props: model.getArticleByUrl.bind(model) },
+        routes: [{
+                path: "/article/:url",
+                component: Vue.options.components["article-display"],
+                props: (router) => ({ article: model.getArticleByUrl(router.params.url) }),
+                beforeEnter: (to, from, next) => {
+                    const article = model.getArticleByUrl(to.params.url);
+                    if (!article) {
+                        next("/page-not-found");
+                    } else {
+                        next();
+                    }
+                }
+            },{
+                path: "",
+                component: Vue.options.components["article-list"],
+                props: { articles: model.articles }
+            }, {
+                path: "/page-not-found",
+                component: Vue.options.components["page-not-found"],
+            }, {
+                path: "*",
+                redirect: "/page-not-found"
+            }
         ]
     });
 

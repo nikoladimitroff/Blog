@@ -22,6 +22,10 @@
 
 </head>
 <body>
+    <template id="article-display" data-autoregister-props="article">
+        <div v-html="article.renderedContent">
+        </div>
+    </template>
     <template id="article-summary" data-autoregister-props="article">
         <div class="article-summary">
             <h3>{{ article.title }}</h3>
@@ -32,9 +36,18 @@
             <router-link v-bind:to="'/article/' + article.articleUrl">Read more</router-link>
         </div>
     </template>
-    <template id="article-display" data-autoregister-props="article">
-        <div v-html="article.renderedContent">
-        </div>
+    <template id="article-list" data-autoregister-props="articles">
+        <ul>
+            <li v-for="article in articles">
+                <article-summary v-bind:article="article"></article-summary>
+            </li>
+        </ul>
+    </template>
+    <template id="page-not-found" data-autoregister-props="articles">
+        <main>
+            <h3>Run!</h3>
+            <img src="resources/here_be_dragons.png"/>
+        </main>
     </template>
 
     <div id="vue-container">
@@ -49,13 +62,6 @@
                     <li><a target="_blank" href="https://twitter.com/nikoladimitroff"><i class="fab fa-twitter"></i></a></li>
                 </ul>
         </aside>
-        <main>
-            <ul>
-                <li v-for="article in articles">
-                    <article-summary v-bind:article="article"></article-summary>
-                </li>
-            </ul>
-        </main>
         <router-view class="view"></router-view>
 
     </div>
