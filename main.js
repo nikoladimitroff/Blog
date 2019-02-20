@@ -53,7 +53,9 @@ let model = {
     },
     loadArticle: async function (article) {
         if (!article.content) {
-            article.content = await loadFile("/posts/" + article.title + "/content.md");
+             const markdown = await loadFile("/posts/" + article.title + "/content.md");
+             // change the relative urls to point to the resources dir relative to the article
+             article.content = markdown.replace(/\(resources\//g, `(posts/${article.title}/resources/`);
         }
         setTimeout(highlightCodeBlocks, 0);
     }
