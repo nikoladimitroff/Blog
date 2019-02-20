@@ -55,6 +55,7 @@ let model = {
         if (!article.content) {
             article.content = await loadFile("/articles/" + article.title + "/content.md");
         }
+        setTimeout(highlightCodeBlocks, 0);
     }
 };
 
@@ -75,6 +76,12 @@ function initShowdown() {
     showdown.setOption("tasklists", true);
     showdown.setOption("openLinksInNewWindow", true);
     showdown.setOption("omitExtraWLInCodeBlocks", true);
+}
+
+function highlightCodeBlocks() {
+    document.querySelectorAll('pre code').forEach((block) => {
+        hljs.highlightBlock(block);
+    });
 }
 
 function main() {

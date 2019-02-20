@@ -16,6 +16,21 @@ Now is the time for all good men to come to
 the aid of their country. This is just a
 regular paragraph.
 
+```cpp
+int x;
+std::vector<int> v;
+std::find_if(v.begin(), v.end(), [x](const int n) { return n == x; });
+```
+
+```js
+points.map(p => p.dist(Vector2.zero)).min();
+```
+
+
+$$
+\frac {\alpha} {\omega} = x^2
+$$
+
 ![puppy](resources/puppy.jpg)
 
 The quick brown fox jumped over the lazy
