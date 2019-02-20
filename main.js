@@ -39,8 +39,7 @@ function loadFile(url) {
 let model = {
     profile: {
         photo: "https://dimitroff.bg/cv/images/portrait.png",
-        name: "Nikola Dimitroff",
-        description: "Ulalala"
+        description: "A blog about software engineering and math from someone who sometimes does them."
     },
     articles: [
         new Article("Foo", "Foodilalallala"),

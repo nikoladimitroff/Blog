@@ -7,22 +7,29 @@
 /* Common classes */
 ul.horizontal {
     display: flex;
+    justify-content: space-between;
+    padding: 0;
     > li {
         display: inline-block;
         list-style-type: none;
     }
 }
 
+.icon-list {
+    li {
+        font-size: 2rem;
+    }
+}
+
 /* Normalization */
-html, body, #vue-container {
+html, body {
     margin: 0;
     padding: 0;
-    width: 100vw;
-    height: 100vh;
     color: @basic-text-color;
     background-color: @basic-background-color;
     font-family: @text-font-family;
 }
+
 h1, h2, h3, h4, h5, h6 {
     font-family: @header-font-family;
 }
@@ -35,14 +42,26 @@ h1, h2, h3, h4, h5, h6 {
 
 aside {
     height: 100%;
-    margin-left: 1vw;
     width: 15vw;
+    margin-left: 1vw;
+    margin-right: 1.5vw;
+    padding-right: 1.5vw;
+    border-right: 1px solid @basic-text-color;
 }
 #profile-photo {
-    border-radius: 50%;
     border: 3px solid @basic-text-color;
     width: 75%;
     max-height: 75%;
+}
+#main-link {
+    a {
+        width: 100%;
+        display: inline-block;
+        text-decoration: none;
+    }
+    a:visited, a:hover, a:focus {
+        color: @basic-text-color;
+    }
 }
 
 article {
