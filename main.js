@@ -53,7 +53,7 @@ let model = {
     },
     loadArticle: async function (article) {
         if (!article.content) {
-            article.content = await loadFile("/articles/" + article.title + "/content.md");
+            article.content = await loadFile("/posts/" + article.title + "/content.md");
         }
         setTimeout(highlightCodeBlocks, 0);
     }

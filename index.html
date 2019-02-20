@@ -27,8 +27,11 @@
 </head>
 <body>
     <template id="article-display" data-autoregister-props="article">
-        <div v-html="article.renderedContent">
-        </div>
+        <article>
+            <h1>{{ article.title }}</h1>
+            <main v-html="article.renderedContent">
+            </main>
+        </article>
     </template>
     <template id="article-summary" data-autoregister-props="article">
         <div class="article-summary">
