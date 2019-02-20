@@ -26,12 +26,23 @@
 
 </head>
 <body>
-    <template id="article-display" data-autoregister-props="article">
-        <article>
+    <template id="article-display" data-autoregister-props="article previous next">
+        <main>
             <h1>{{ article.title }}</h1>
-            <main v-html="article.renderedContent">
-            </main>
-        </article>
+            <article v-html="article.renderedContent">
+            </article>
+            <hr/>
+            <div>
+                <div v-if="previous != undefined">
+                    <span>Previous post</span>
+                    <router-link v-bind:to="'/article/' + previous.articleUrl">{{previous.title}}</router-link>
+                </div>
+                <div v-if="next != undefined">
+                    <span>Next post</span>
+                    <router-link v-bind:to="'/article/' + next.articleUrl">{{next.title}}</router-link>
+                </div>
+            </div>
+        </main>
     </template>
     <template id="article-summary" data-autoregister-props="article">
         <div class="article-summary">

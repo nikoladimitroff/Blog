@@ -51,6 +51,14 @@ let model = {
     getArticleByUrl: function (url) {
         return this.articles.find(a => a.articleUrl === url);
     },
+    getArticleAndNeighboursByUrl: function (url) {
+        const index = this.articles.findIndex(a => a.articleUrl === url);
+        return {
+            article: this.articles[index],
+            previous: this.articles[index - 1],
+            next: this.articles[index + 1]
+        };
+    },
     loadArticle: async function (article) {
         if (!article.content) {
              const markdown = await loadFile("/posts/" + article.title + "/content.md");
@@ -95,7 +103,7 @@ function main() {
         routes: [{
                 path: "/article/:url",
                 component: Vue.options.components["article-display"],
-                props: (router) => ({ article: model.getArticleByUrl(router.params.url) }),
+                props: (router) => model.getArticleAndNeighboursByUrl(router.params.url),
                 beforeEnter: (to, from, next) => {
                     const article = model.getArticleByUrl(to.params.url);
                     if (!article) {
