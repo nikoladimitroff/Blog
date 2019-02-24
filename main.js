@@ -8,7 +8,7 @@ class Article {
         this.content = undefined;
     }
     get articleUrl() {
-        return this.title.toLowerCase().replace(/ /g, '%20');
+        return encodeURIComponent(this.title.toLowerCase());
     }
     get renderedContent() {
         return new showdown.Converter().makeHtml(this.content);
@@ -42,16 +42,18 @@ let model = {
         description: "A blog about software engineering and math from someone who sometimes does them."
     },
     articles: [
-        new Article("Foo", "Foodilalallala"),
+        new Article("Regular n-sided polygon", "Foodilalallala"),
         new Article("Foo", "Foodilalallala"),
         new Article("Foo", "Foodilalallala"),
         new Article("Foo", "Foodilalallala"),
     ],
     getArticleByUrl: function (url) {
-        return this.articles.find(a => a.articleUrl === url);
+        const encodedUrl = encodeURIComponent(url);
+        return this.articles.find(a => a.articleUrl === encodedUrl);
     },
     getArticleAndNeighboursByUrl: function (url) {
-        const index = this.articles.findIndex(a => a.articleUrl === url);
+        const encodedUrl = encodeURIComponent(url);
+        const index = this.articles.findIndex(a => a.articleUrl === encodedUrl);
         return {
             article: this.articles[index],
             previous: this.articles[index - 1],
