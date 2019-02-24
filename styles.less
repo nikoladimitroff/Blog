@@ -47,6 +47,10 @@ aside {
     margin-right: 1.5vw;
     padding-right: 1.5vw;
     border-right: 1px solid @basic-text-color;
+
+    a, a:visited, a:hover, a:focus {
+        color: @basic-text-color;
+    }
 }
 #profile-photo {
     border: 3px solid @basic-text-color;
@@ -59,12 +63,23 @@ aside {
         display: inline-block;
         text-decoration: none;
     }
-    a:visited, a:hover, a:focus {
-        color: @basic-text-color;
-    }
 }
 
 article {
     max-width: 700px;
     width: 100%;
+}
+#article-footer {
+    position: relative;
+    height: 5rem;
+}
+#previous-post, #next-post {
+    position: absolute;
+    top: 1rem;
+}
+#next-post {
+    left: 75%;
+}
+.neighbour-post-button {
+    font-size: 1.2rem;
 }
