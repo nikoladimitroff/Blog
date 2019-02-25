@@ -4,6 +4,8 @@
 @header-font-family: Verdana;
 @text-font-family: "Segoe UI";
 @aside-border: 1px solid @basic-text-color;
+@main-section-width: 700px;
+@profile-section-width: 300px;
 
 /* Normalization */
 html, body {
@@ -62,8 +64,9 @@ ul.horizontal {
 // Profile
 aside {
     height: 100%;
-    width: 100vw;
     max-width: 300px;
+    min-width: 175px;
+    flex: 10%;
     margin-left: 1vw;
     margin-right: 1.5vw;
     padding-right: 1.5vw;
@@ -89,8 +92,10 @@ aside {
 // Article
 
 .article-container {
-    max-width: 700px;
-    width: 100vw;
+    max-width: 750px;
+    min-width: 529px;
+    flex: 50%;
+    flex-grow: 1;
     padding: 0.5rem;
     overflow: hidden;
 }
@@ -119,7 +124,7 @@ article {
 }
 
 /* Mobile */
-@media (max-width: 767px) {
+@media (max-width: 768px) {
     aside {
         border-right: none;
         border-bottom: @aside-border;
