@@ -3,6 +3,7 @@
 @basic-background-color: snow;
 @header-font-family: Verdana;
 @text-font-family: "Segoe UI";
+@aside-border: 1px solid @basic-text-color;
 
 /* Common classes */
 ul.horizontal {
@@ -34,19 +35,26 @@ h1, h2, h3, h4, h5, h6 {
     font-family: @header-font-family;
 }
 
+img {
+    width: 100%;
+}
+
 /* Screens */
 #vue-container {
     padding-top: 5vh;
     display: flex;
+    flex-wrap: wrap;
 }
 
+// Profile
 aside {
     height: 100%;
-    width: 15vw;
+    width: 100vw;
+    max-width: 300px;
     margin-left: 1vw;
     margin-right: 1.5vw;
     padding-right: 1.5vw;
-    border-right: 1px solid @basic-text-color;
+    border-right: @aside-border;
 
     a, a:visited, a:hover, a:focus {
         color: @basic-text-color;
@@ -65,8 +73,15 @@ aside {
     }
 }
 
-article {
+// Article
+
+.article-container {
     max-width: 700px;
+    width: 100vw;
+    padding: 0.5rem;
+    overflow: hidden;
+}
+article {
     width: 100%;
 }
 #article-footer {
@@ -85,4 +100,22 @@ article {
 }
 #back-to-top-button {
     cursor: pointer;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+    aside {
+        border-right: none;
+        border-bottom: @aside-border;
+        max-width: none;
+    }
+    #profile-photo {
+        width: 30%;
+        transform: translate(-50%, 0);
+        position: relative;
+        left: 50%;
+    }
+    #main-link {
+        text-align: center;
+    }
 }

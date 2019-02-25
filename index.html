@@ -34,7 +34,7 @@
 </head>
 <body>
     <template id="article-display" data-autoregister-props="article previous next">
-        <main>
+        <main class="article-container">
             <h1>{{ article.title }}</h1>
             <div>
                 <span>Published:</span>
@@ -111,7 +111,6 @@
                 </ul>
         </aside>
         <router-view class="view"></router-view>
-
     </div>
     <script src="main.js"></script>
 </body>
