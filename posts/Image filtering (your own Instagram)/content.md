@@ -30,8 +30,8 @@ All the techniques described below and more can be seen in action at this [demo]
 Grayscaled colors have their RGB components equal. The question that arises is, given a color, how do we grayscale it? We need to find some sort of a mean of all the channels. You may come up with many formulae for calculating means of 3 numbers, but the two simplest are arithmetic and geometric mean given by the formulae below:
 
 $$
-Arithmetic mean = \frac{R+G+B}{3}
-Geometric mean = \sqrt{R^2+G^2+B^2}
+Arithmetic \; mean = \frac{R+G+B}{3} \\\\
+Geometric \; mean = \sqrt{R^2+G^2+B^2}
 $$
 
 Now that we have the formula, we need to iterate over all pixels and use either of the above to compute the mean. Then, store the mean in all 3 components of the color and voila! Here's the code:
@@ -72,7 +72,7 @@ One effect I particularly like is adding a constant color to all pixels in the s
 
 Implementing this effect is as easy as it sounds. Just iterate over all pixels and add the predefined color to it (see [implementation here][add-color-impl]). The image below shows that effect when the constant color added is respectively red, green or blue as well as grayscaled.
 
-![add a color demo](resource/add_color_sample.png)
+![add a color demo](resources/add_color_sample.png)
 
 ### Colour inversion
 

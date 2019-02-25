@@ -36,6 +36,14 @@
     <template id="article-display" data-autoregister-props="article previous next">
         <main>
             <h1>{{ article.title }}</h1>
+            <div>
+                <span>Published:</span>
+                <span>{{ article.publishDate.toLocaleDateString("en-UK", { year: 'numeric', month: 'long', day: 'numeric' }) }}</span>
+                <br/>
+                <span>Last edited:</span>
+                <span>{{ article.lastEditDate.toLocaleDateString("en-UK", { year: 'numeric', month: 'long', day: 'numeric' }) }}</span>
+            </div>
+            <hr/>
             <article v-html="article.renderedContent">
             </article>
             <hr/>
@@ -48,6 +56,9 @@
                         v-bind:to="'/article/' + previous.articleUrl">
                         {{previous.title}}
                     </router-link>
+                </div>
+                <div id="back-to-top-button" title="Back to top" onclick="scrollToTop()">
+                    <i class="fa fa-arrow-up"></i>
                 </div>
                 <div v-if="next != undefined" id="next-post">
                     <span>Next post</span>
@@ -67,7 +78,6 @@
             <span>{{ article.publishDate.toLocaleDateString("en-UK", { year: 'numeric', month: 'long', day: 'numeric' }) }}</span>
             <br/>
             <div class="description">{{ article.description }}</div>
-            <a>Read more</a>
             <router-link v-bind:to="'/article/' + article.articleUrl">Read more</router-link>
         </div>
     </template>

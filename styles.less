@@ -70,16 +70,19 @@ article {
     width: 100%;
 }
 #article-footer {
-    position: relative;
+    display: flex;
+    justify-content: space-between;
     height: 5rem;
 }
-#previous-post, #next-post {
-    position: absolute;
+#previous-post, #next-post, #back-to-top-button {
     top: 1rem;
 }
-#next-post {
-    left: 75%;
+#previous-post, next-post {
+    max-width: 40%;
 }
 .neighbour-post-button {
     font-size: 1.2rem;
+}
+#back-to-top-button {
+    cursor: pointer;
 }

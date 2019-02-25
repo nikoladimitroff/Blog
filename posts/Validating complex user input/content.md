@@ -8,7 +8,7 @@ I made a [simple JavaScript library][cfg-solver] that allows you to validate com
 
 #### Quick link to demo
 
-[Validating words in sample grammars][demo-link]
+* [Validating words in sample grammars][demo-link]
 
 ## WTF is a context-free grammar?
 

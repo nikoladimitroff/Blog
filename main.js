@@ -5,6 +5,7 @@ class Article {
         this.title = title;
         this.description = description;
         this.publishDate = new Date();
+        this.lastEditDate = new Date();
         this.content = undefined;
     }
     get articleUrl() {
@@ -34,6 +35,11 @@ function loadFile(url) {
     xhr.open("GET", url, true);
     xhr.send();
     return promise;
+}
+
+function scrollToTop() {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 }
 
 let model = {
@@ -71,18 +77,43 @@ let model = {
              // change the relative urls to point to the resources dir relative to the article
              article.content = markdown.replace(/\(resources\//g, `(posts/${article.articleUrl}/resources/`);
         }
-        setTimeout(highlightCodeBlocks, 0);
+        setTimeout(rerenderArticle, 0);
     }
 };
+
+const onDisplayArticle = (to, from, next) => {
+    const article = model.getArticleByUrl(to.params.url);
+    if (!article) {
+        next("/page-not-found");
+    } else {
+        model.loadArticle(article);
+        next();
+    }
+};
+
+const ComponentRouting = {
+    "article-display": {
+        beforeRouteUpdate: onDisplayArticle,
+        beforeRouteEnter: onDisplayArticle
+    },
+    addRoutesToComponent: function (id, component) {
+        const routes = this[id];
+        for (let route in routes) {
+            component[route] = routes[route];
+        }
+    }
+}
 
 function registerComponents() {
     const templates = document.querySelectorAll("template");
     for (const template of templates) {
         const props = template.dataset.autoregisterProps.split(" ") || "";
-        Vue.component(template.id, {
+        let descriptor = {
             props: props,
-            template: template.innerHTML
-        });
+            template: template.innerHTML,
+        };
+        ComponentRouting.addRoutesToComponent(template.id, descriptor);
+        Vue.component(template.id, descriptor);
     }
 }
 
@@ -95,10 +126,13 @@ function initShowdown() {
     showdown.setOption("omitExtraWLInCodeBlocks", true);
 }
 
-function highlightCodeBlocks() {
+function rerenderArticle() {
     document.querySelectorAll('pre code').forEach((block) => {
         hljs.highlightBlock(block);
     });
+    if (MathJax.Hub) {
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+    }
 }
 
 function main() {
@@ -111,15 +145,6 @@ function main() {
                 path: "/article/:url",
                 component: Vue.options.components["article-display"],
                 props: (router) => model.getArticleAndNeighboursByUrl(router.params.url),
-                beforeEnter: (to, from, next) => {
-                    const article = model.getArticleByUrl(to.params.url);
-                    if (!article) {
-                        next("/page-not-found");
-                    } else {
-                        model.loadArticle(article);
-                        next();
-                    }
-                }
             },{
                 path: "",
                 component: Vue.options.components["article-list"],

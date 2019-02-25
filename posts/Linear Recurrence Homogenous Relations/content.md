@@ -1,5 +1,3 @@
-# Linear recurrence relations (or how to solve recursive sequences effectively)
-
 *This article will have quite a few equations but they are not as hard to follow as they look so bear with me.*
 
 Every programmer has written a program that finds the nth Fibonacci number. Some of you did it with recursion, others went a step ahead and used dynamic programming. Still, even with dynamic programming your algorithm was $O(n)$. We can go even further and write an $O(1)$ algorithm for finding the nth number of any sequence of the type:
