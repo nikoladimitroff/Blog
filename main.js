@@ -45,7 +45,7 @@ let model = {
         new Article("Regular n-sided polygon", "Foodilalallala"),
         new Article("Linear Recurrence Homogenous Relations", "Foodilalallala"),
         new Article("Intro to programming materials", "Foodilalallala"),
-        new Article("Foo", "Foodilalallala"),
+        new Article("Validating complex user input", "Foodilalallala"),
     ],
     getArticleByUrl: function (url) {
         const encodedUrl = encodeURIComponent(url);
@@ -62,9 +62,9 @@ let model = {
     },
     loadArticle: async function (article) {
         if (!article.content) {
-             const markdown = await loadFile("/posts/" + article.title + "/content.md");
+             const markdown = await loadFile("/posts/" + article.articleUrl + "/content.md");
              // change the relative urls to point to the resources dir relative to the article
-             article.content = markdown.replace(/\(resources\//g, `(posts/${article.title}/resources/`);
+             article.content = markdown.replace(/\(resources\//g, `(posts/${article.articleUrl}/resources/`);
         }
         setTimeout(highlightCodeBlocks, 0);
     }
