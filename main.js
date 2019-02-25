@@ -48,6 +48,9 @@ let model = {
         new Article("Validating complex user input", "Foodilalallala"),
         new Article("Image filtering (your own Instagram)", "Foodilalallala"),
         new Article("C++ with properties", "Foodilalallala"),
+        new Article("Summer recap", "Foodilalallala"),
+        new Article("On the purpose of Math in a CS curriculum", "Foodilalallala"),
+        new Article("A postmortem of Coherent GT 2.0", "Foodilalallala"),
     ],
     getArticleByUrl: function (url) {
         const encodedUrl = encodeURIComponent(url);
