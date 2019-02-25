@@ -43,7 +43,7 @@ let model = {
     },
     articles: [
         new Article("Regular n-sided polygon", "Foodilalallala"),
-        new Article("Foo", "Foodilalallala"),
+        new Article("Linear Recurrence Homogenous Relations", "Foodilalallala"),
         new Article("Foo", "Foodilalallala"),
         new Article("Foo", "Foodilalallala"),
     ],
@@ -83,6 +83,7 @@ function registerComponents() {
 
 function initShowdown() {
     showdown.setOption("tables", true);
+    showdown.setOption("literalMidWordUnderscores", true);
     showdown.setOption("strikeThrough", true);
     showdown.setOption("tasklists", true);
     showdown.setOption("openLinksInNewWindow", true);
