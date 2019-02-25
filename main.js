@@ -44,7 +44,7 @@ let model = {
     articles: [
         new Article("Regular n-sided polygon", "Foodilalallala"),
         new Article("Linear Recurrence Homogenous Relations", "Foodilalallala"),
-        new Article("Foo", "Foodilalallala"),
+        new Article("Intro to programming materials", "Foodilalallala"),
         new Article("Foo", "Foodilalallala"),
     ],
     getArticleByUrl: function (url) {
