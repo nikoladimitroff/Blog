@@ -37,11 +37,15 @@
         <main class="article-container">
             <h1>{{ article.title }}</h1>
             <div>
-                <span>Published:</span>
-                <span>{{ article.publishDate.toLocaleDateString("en-UK", { year: 'numeric', month: 'long', day: 'numeric' }) }}</span>
+                <span class="date-display">Published:</span>
+                <span class="date-display">
+                    {{ article.publishDate.toLocaleDateString("en-UK", { year: 'numeric', month: 'long', day: 'numeric' }) }}
+                </span>
                 <br/>
-                <span>Last edited:</span>
-                <span>{{ article.lastEditDate.toLocaleDateString("en-UK", { year: 'numeric', month: 'long', day: 'numeric' }) }}</span>
+                <span class="date-display">Last edited:</span>
+                <span class="date-display">
+                    {{ article.lastEditDate.toLocaleDateString("en-UK", { year: 'numeric', month: 'long', day: 'numeric' }) }}
+                </span>
             </div>
             <hr/>
             <article v-html="article.renderedContent">
@@ -75,14 +79,16 @@
     <template id="article-summary" data-autoregister-props="article">
         <div class="article-summary">
             <h3>{{ article.title }}</h3>
-            <span>{{ article.publishDate.toLocaleDateString("en-UK", { year: 'numeric', month: 'long', day: 'numeric' }) }}</span>
+            <span class="date-display">
+                {{ article.publishDate.toLocaleDateString("en-UK", { year: 'numeric', month: 'long', day: 'numeric' }) }}
+            </span>
             <br/>
             <div class="description">{{ article.description }}</div>
             <router-link v-bind:to="'/article/' + article.articleUrl">Read more</router-link>
         </div>
     </template>
     <template id="article-list" data-autoregister-props="articles">
-        <ul>
+        <ul id="main-page-list">
             <li v-for="article in articles">
                 <article-summary v-bind:article="article"></article-summary>
             </li>
