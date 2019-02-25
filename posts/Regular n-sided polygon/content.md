@@ -132,7 +132,7 @@ We can go beyond our 3d vision and talk about 4d spheres. Moreover, we can talk 
 First off, some more observations.
 
 1. We already saw that an n-dimensional polar system requires n – 1 angles and a radius.
-1. Given what we know from the previous 2 algorithms (and of course given what Wikipedia says about hyperspheres) we can conclude that the parametric equations of a sphere are:
+1. Given what we know from the previous 2 algorithms we can conclude that the [parametric equations of a hypersphere](http://en.wikipedia.org/wiki/N-sphere#Spherical_coordinates) are:
 
 <p>
 $$
