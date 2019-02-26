@@ -1,15 +1,10 @@
-I love the programming concept of properties but I've never enjoyed using them in languages that have no native support, C++ being one of them. Properties being the concept of having things behaving like data fields in a class, which actually call functions that can control the flow of data. See examples in [C#][props-csharp] and [JavaScript][props-js].
+I love the programming concept of properties but I've never enjoyed using them in languages that have no native support, C++ being one of them. Properties being the concept of having things behaving like data fields in a class, which actually call functions that can control the flow of data. See examples in [C#](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/properties) and [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get).
 
 I came up with an idea on implementing properties and this here is a description on doing that.
 
 #### Quick link to demo
 
-* Get the code from [pastebin][demo-code]
-
-
-[demo-code]: https://pastebin.com/jjK3jwD6
-[props-csharp]: https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/properties
-[props-js]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get
+* Get the code from [pastebin][demo-link]
 
 We'll be using a small object to wrap the getter and setter. The object is dependent on the type of the property AND on the type of the class owning the property (you'll see why) thus we need a template:
 

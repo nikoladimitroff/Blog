@@ -1,5 +1,7 @@
 
-It's been a while since I started [teaching programming at academia](http://dimitroff.bg/intro-to-programming-materials/) and the question of 'Why is there so much math in our curriculum?'* has been raised often by students. It's not like this hasn't been answered quadrillion [times][opinion-1][with][opinion-2] [highly][opinion-3] [varying][opinion-3] [results][opinion-4], but I'd rather put forth my own understanding of the reasons behind it.
+It's been a while since I started [teaching programming at academia](/#/article/intro%20to%20programming%20materials) and the question of 'Why is there so much math in our curriculum?'* has been raised often by students. I thought I should put my 2 cents in writing.
+
+It's not like this hasn't been answered quadrillion [times][opinion-1] [with][opinion-2] [highly][opinion-3] [varying][opinion-3] [results][opinion-4]. Still, I believe my argument is worth sharing.
 
 ## A distant beginning
 

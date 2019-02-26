@@ -1,5 +1,3 @@
-# Generating vertices of regular n-sided polygons/polyhedra and circles/spheres
-
 There are a number of applications that make use of circles, spheres, regular polygons and polyhedra. Most of them are in the area of computer graphics and most likely you are reading this because you'd like to know how are those objects generated in 3D modeling tools or perhaps in that awesome drawing library you are using.
 
 Other usage examples can be found in any software that needs to place some objects equidistantly around a circle - e.g. your favourite video game arena brawler which spawns ten enemies in a circle around the arena's center.

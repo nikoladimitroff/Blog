@@ -1,4 +1,4 @@
-Here I am, minding my own business when suddenly a wild though appears – ‘I wanna build my own image filtering app!' This turned to be more of a [JavaScript library][filter-me] than the full-blown app I imagined, but nevertheless I had a lot of fun building it so I'll share the experience.
+Here I am, minding my own business when suddenly a wild though appears – 'I wanna build my own image filtering app!' This turned to be more of a [JavaScript library](https://github.com/NikolaDimitroff/Filterme.js) than the full-blown app I imagined, but nevertheless I had a lot of fun building it so I'll share the experience.
 
 As always,
 

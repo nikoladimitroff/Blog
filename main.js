@@ -1,18 +1,30 @@
 const DateFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
 class Article {
-    constructor(title, description) {
+    constructor(title, preview, publishDate, lastEditDate) {
         this.title = title;
-        this.description = description;
-        this.publishDate = new Date();
-        this.lastEditDate = new Date();
+        this.preview = preview;
+        this.publishDate = publishDate;
+        this.lastEditDate = lastEditDate;
         this.content = undefined;
     }
     get articleUrl() {
         return encodeURIComponent(this.title.toLowerCase());
     }
     get renderedContent() {
-        return new showdown.Converter().makeHtml(this.content);
+        return Article.converterInstance.makeHtml(this.content);
+    }
+    get renderedPreview() {
+        return Article.converterInstance.makeHtml(this.preview);
+    }
+    static fromDescriptor(descriptor) {
+        return new Article(descriptor.title,
+            descriptor.preview,
+            new Date(descriptor.publishDate),
+            new Date(descriptor.lastEditDate));
+    }
+    static createConverter() {
+        Article.converterInstance = new showdown.Converter();
     }
 }
 
@@ -44,20 +56,15 @@ function scrollToTop() {
 
 let model = {
     profile: {
+        websiteName: "dimitroff.bg",
         photo: "https://dimitroff.bg/cv/images/portrait.png",
-        description: "A blog about software engineering and math from someone who sometimes does them."
+        description: "A blog about software engineering and math from someone who sometimes does them.",
+        linkTwitter: "https://twitter.com/nikoladimitroff",
+        linkSO: "https://stackoverflow.com/users/1115693/nikola-dimitroff",
+        linkGithub: "https://github.com/nikoladimitroff",
+        linkEmail: "mailto:nikola@dimitroff.bg",
     },
-    articles: [
-        new Article("Regular n-sided polygon", "Foodilalallala"),
-        new Article("Linear Recurrence Homogenous Relations", "Foodilalallala"),
-        new Article("Intro to programming materials", "Foodilalallala"),
-        new Article("Validating complex user input", "Foodilalallala"),
-        new Article("Image filtering (your own Instagram)", "Foodilalallala"),
-        new Article("C++ with properties", "Foodilalallala"),
-        new Article("Summer recap", "Foodilalallala"),
-        new Article("On the purpose of Math in a CS curriculum", "Foodilalallala"),
-        new Article("A postmortem of Coherent GT 2.0", "Foodilalallala"),
-    ],
+    articles: window.globalArticleIndex.map(Article.fromDescriptor),
     getArticleByUrl: function (url) {
         const encodedUrl = encodeURIComponent(url);
         return this.articles.find(a => a.articleUrl === encodedUrl);
@@ -77,7 +84,7 @@ let model = {
              // change the relative urls to point to the resources dir relative to the article
              article.content = markdown.replace(/\(resources\//g, `(posts/${article.articleUrl}/resources/`);
         }
-        setTimeout(rerenderArticle, 0);
+        setTimeout(rerenderPage, 0);
     }
 };
 
@@ -91,10 +98,19 @@ const onDisplayArticle = (to, from, next) => {
     }
 };
 
+const onLoadMainList = (to, from, next) => {
+    setTimeout(rerenderPage, 0);
+    next();
+}
+
 const ComponentRouting = {
     "article-display": {
         beforeRouteUpdate: onDisplayArticle,
         beforeRouteEnter: onDisplayArticle
+    },
+    "article-list": {
+        beforeRouteUpdate: onLoadMainList,
+        beforeRouteEnter: onLoadMainList
     },
     addRoutesToComponent: function (id, component) {
         const routes = this[id];
@@ -124,9 +140,10 @@ function initShowdown() {
     showdown.setOption("tasklists", true);
     showdown.setOption("openLinksInNewWindow", true);
     showdown.setOption("omitExtraWLInCodeBlocks", true);
+    Article.createConverter();
 }
 
-function rerenderArticle() {
+function rerenderPage() {
     document.querySelectorAll('pre code').forEach((block) => {
         hljs.highlightBlock(block);
     });

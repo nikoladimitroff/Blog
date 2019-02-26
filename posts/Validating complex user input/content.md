@@ -1,4 +1,6 @@
-Here I am again, presenting to you another article with a bunch of scary math.
+Sometimes you need to have an input field in your app for the user to enter a complex expression - like for a calculator or some bot commands. If you wanted to validated whether what the user entered was any valid, you would need to go through a lot of pain to write that check manually so let me offer you something faster and easier.
+
+Here I am again today to present to you another article with a bunch of scary math.
 
 ![scary-math](resources/push_math.gif)
 
