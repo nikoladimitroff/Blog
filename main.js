@@ -58,7 +58,8 @@ let model = {
     profile: {
         websiteName: "dimitroff.bg",
         photo: "https://dimitroff.bg/cv/images/portrait.png",
-        description: "A blog about software engineering and math from someone who sometimes does them.",
+        description: "A blog about software engineering and math from someone who sometimes does them. " +
+            "<a target='_blank' href='/cv'>Read more about me.</a>",
         linkTwitter: "https://twitter.com/nikoladimitroff",
         linkSO: "https://stackoverflow.com/users/1115693/nikola-dimitroff",
         linkGithub: "https://github.com/nikoladimitroff",

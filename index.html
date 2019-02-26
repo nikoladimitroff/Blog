@@ -108,7 +108,7 @@
             <h3 id="main-link">
                 <router-link to="/">{{ profile.websiteName }}</router-link>
             </h3>
-            <div>{{ profile.description }}</div>
+            <div v-html="profile.description"></div>
             <ul class="horizontal icon-list">
                     <li><a target="_blank" v-bind:href="profile.linkTwitter"><i class="fab fa-twitter"></i></a></li>
                     <li><a target="_blank" v-bind:href="profile.linkGithub"><i class="fab fa-github"></i></a></li>
