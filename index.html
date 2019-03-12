@@ -2,17 +2,23 @@
 <html>
 <head>
 
+    <!-- Styles -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="styles.css"/>
+    <link rel="icon" type="image/png" href="resources/favicon32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="resources/favicon16.png" sizes="16x16" />
 
+    <!-- Vue -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.6/dist/vue.js"></script>
     <script src="https://unpkg.com/vue-router@3.0.2/dist/vue-router.js"></script>
 
+    <!-- Markdown parser-->
     <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.0/dist/showdown.min.js"></script>
-    <link rel="stylesheet"
-      href="thirdparty/highlightjs/vs.css">
+    <!-- Syntax highlighter -->
+    <link rel="stylesheet" href="thirdparty/highlightjs/vs.css">
     <script src="thirdparty/highlightjs/highlight.pack.js"></script>
 
+    <!-- LaTeX -->
     <script type="text/javascript">
         window.MathJax = {
             displayAlign: "center",
@@ -30,6 +36,27 @@
         };
       </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+
+    <!-- Twitter (as described here: https://developer.twitter.com/en/docs/twitter-for-websites/javascript-api/guides/set-up-twitter-for-websites) -->
+    <script>
+        window.twttr = (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {};
+        if (d.getElementById(id)) return t;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://platform.twitter.com/widgets.js";
+        fjs.parentNode.insertBefore(js, fjs);
+
+        t._e = [];
+        t.ready = function(f) {
+        t._e.push(f);
+        };
+
+        return t;
+        }(document, "script", "twitter-wjs"));
+    </script>
+    <!-- Data file; contains basic info about all available articles -->
     <script src="posts/articleIndex.js"></script>
 </head>
 <body>
@@ -52,11 +79,14 @@
             </article>
             <hr/>
             <div id="article-footer">
-                <div v-if="previous != undefined" id="previous-post">
+                <div
+                    id="previous-post"
+                    v-bind:style="{ visibility: previous != undefined ? 'visible' : 'hidden' }">
                     <span>Previous post</span>
                     <br/>
                     <router-link
                         class="neighbour-post-button"
+                        v-if="previous != undefined"
                         v-bind:to="'/article/' + previous.articleUrl">
                         {{previous.title}}
                     </router-link>
@@ -64,15 +94,29 @@
                 <div id="back-to-top-button" title="Back to top" onclick="scrollToTop()">
                     <i class="fa fa-arrow-up"></i>
                 </div>
-                <div v-if="next != undefined" id="next-post">
+                <div id="next-post"
+                    v-bind:style="{ visibility: next != undefined ? 'visible' : 'hidden' }" >
                     <span>Next post</span>
                     <br/>
                     <router-link
                         class="neighbour-post-button"
+                        v-if="next != undefined"
                         v-bind:to="'/article/' + next.articleUrl">
                         {{next.title}}
                     </router-link>
                 </div>
+            </div>
+            <div id="comment-section">
+                <span v-if="!article.meta.commentCollection">
+                    Comments are disabled for this article.
+                </span>
+                <a class="twitter-timeline"
+                    data-partner="tweetdeck"
+                    data-chrome="transparent"
+                    v-if="article.meta.commentCollection"
+                    v-bind:href="article.meta.commentCollection">
+                    Comments for this article on Twitter.
+                </a>
             </div>
         </main>
     </template>
@@ -103,7 +147,8 @@
 
     <div id="vue-container">
         <aside>
-            <img id="profile-photo" v-bind:src="profile.photo"/>
+            <img id="profile-photo" v-if="presentation.isScreenLandscape" v-bind:src="profile.photoDesktop"/>
+            <img id="profile-photo" v-if="!presentation.isScreenLandscape" v-bind:src="profile.photoMobile"/>
             <br/>
             <h3 id="main-link">
                 <router-link to="/">{{ profile.websiteName }}</router-link>

@@ -22,17 +22,24 @@ var generateArticleInfo = function(file) {
     const stat = fs.statSync(file);
     const fileContent = fs.readFileSync(file, { encoding: "utf8"});
     const endOfFirstParagraph = fileContent.indexOf(os.EOL + os.EOL);
+    const metaFilePath = path.join(path.dirname(file), "meta.json");
+    let metadata = {};
+    if (fs.existsSync(metaFilePath)) {
+        metadata = JSON.parse(fs.readFileSync(metaFilePath, { encoding: "utf8"}));
+    }
     return {
         title: path.basename(path.dirname(file)),
         preview: fileContent.substring(0, endOfFirstParagraph),
+        meta: metadata,
         lastEditDate: stat.mtime,
         publishDate: stat.birthtime,
     };
 }
 
-var dateStringComparator = function (s1, s2) {
-    const d1 = new Date(s1);
-    const d2 = new Date(s2);
+var dateStringComparator = function (article1, article2) {
+    const d1 = new Date(article1.publishDate);
+    const d2 = new Date(article2.publishDate);
+    console.log(d1, d2, d2 - d1);
     return d2 - d1;
 }
 

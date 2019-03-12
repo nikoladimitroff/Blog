@@ -1,11 +1,12 @@
 const DateFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
 class Article {
-    constructor(title, preview, publishDate, lastEditDate) {
+    constructor(title, preview, publishDate, lastEditDate, meta) {
         this.title = title;
         this.preview = preview;
         this.publishDate = publishDate;
         this.lastEditDate = lastEditDate;
+        this.meta = meta;
         this.content = undefined;
     }
     get articleUrl() {
@@ -21,7 +22,9 @@ class Article {
         return new Article(descriptor.title,
             descriptor.preview,
             new Date(descriptor.publishDate),
-            new Date(descriptor.lastEditDate));
+            new Date(descriptor.lastEditDate),
+            descriptor.meta,
+        );
     }
     static createConverter() {
         Article.converterInstance = new showdown.Converter();
@@ -57,7 +60,8 @@ function scrollToTop() {
 let model = {
     profile: {
         websiteName: "dimitroff.bg",
-        photo: "https://dimitroff.bg/cv/images/portrait.png",
+        photoDesktop: "resources/portrait-desktop.jpg",
+        photoMobile: "resources/portrait-mobile.jpg",
         description: "A blog about software engineering and math from someone who sometimes does them. " +
             "<a target='_blank' href='/cv'>Read more about me.</a>",
         linkTwitter: "https://twitter.com/nikoladimitroff",
@@ -66,6 +70,10 @@ let model = {
         linkEmail: "mailto:nikola@dimitroff.bg",
     },
     articles: window.globalArticleIndex.map(Article.fromDescriptor),
+    // Used for presentation only
+    presentation: {
+        isScreenLandscape: false,
+    },
     getArticleByUrl: function (url) {
         const encodedUrl = encodeURIComponent(url);
         return this.articles.find(a => a.articleUrl === encodedUrl);
@@ -151,6 +159,9 @@ function rerenderPage() {
     if (MathJax.Hub) {
         MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
     }
+    if (twttr.widgets) {
+        twttr.widgets.load(document.getElementById("comment-section"));
+    }
 }
 
 function main() {
@@ -177,6 +188,14 @@ function main() {
         ]
     });
 
+    // Update the presentation properties on resize
+    const computeLandscapeness = function () {
+        const portraitWidth = 768;
+        model.presentation.isScreenLandscape = window.innerWidth > portraitWidth;
+    };
+    window.addEventListener("resize", computeLandscapeness);
+    computeLandscapeness();
+
     window.app = new Vue({
         el: "#vue-container",
         data: model,
@@ -184,4 +203,4 @@ function main() {
     });
 }
 
-main();
+document.addEventListener("DOMContentLoaded", main);
