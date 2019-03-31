@@ -22,14 +22,20 @@ var generateArticleInfo = function(file) {
     const stat = fs.statSync(file);
     const fileContent = fs.readFileSync(file, { encoding: "utf8"});
     const endOfFirstParagraph = fileContent.indexOf(os.EOL + os.EOL);
+    const articleTitle = path.basename(path.dirname(file));
+    let preview = fileContent.substring(0, endOfFirstParagraph);
+    // change the relative urls to point to the resources dir relative to the article
+    const articleUrl = encodeURIComponent(articleTitle.toLowerCase());
+    preview = preview.replace(/\(resources\//g, `(posts/${articleUrl}/resources/`);
+
     const metaFilePath = path.join(path.dirname(file), "meta.json");
     let metadata = {};
     if (fs.existsSync(metaFilePath)) {
         metadata = JSON.parse(fs.readFileSync(metaFilePath, { encoding: "utf8"}));
     }
     return {
-        title: path.basename(path.dirname(file)),
-        preview: fileContent.substring(0, endOfFirstParagraph),
+        title: articleTitle,
+        preview: preview,
         meta: metadata,
         lastEditDate: stat.mtime,
         publishDate: stat.birthtime,
@@ -39,7 +45,6 @@ var generateArticleInfo = function(file) {
 var dateStringComparator = function (article1, article2) {
     const d1 = new Date(article1.publishDate);
     const d2 = new Date(article2.publishDate);
-    console.log(d1, d2, d2 - d1);
     return d2 - d1;
 }
 
