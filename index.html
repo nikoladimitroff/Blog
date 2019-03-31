@@ -1,16 +1,28 @@
 <!doctype HTML>
 <html>
 <head>
+    <meta charset="UTF-8" />
+    <!-- SEO -->
+    <meta name="author" content="Nikola Dimitroff" />
+    <meta name="description" content="A blog about software engineering and math" />
+    <meta name="keywords" content="Ubisoft, programming, C++, JavaScript, JS, math, games, high-performance, ФМИ, FMI, Sofia university">
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@nikoladimitroff" />
+    <meta name="twitter:title" content="Main page" />
+    <meta name="twitter:description" content="Nikola Dimitroff's blog" />
+
+
+    <title>Nikola Dimitroff's blog</title>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="styles.css"/>
     <link rel="icon" type="image/png" href="resources/favicon32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="resources/favicon16.png" sizes="16x16" />
 
     <!-- Vue -->
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.6/dist/vue.js"></script>
-    <script src="https://unpkg.com/vue-router@3.0.2/dist/vue-router.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.6/dist/vue.min.js"></script>
+    <script src="https://unpkg.com/vue-router@3.0.2/dist/vue-router.min.js"></script>
 
     <!-- Markdown parser-->
     <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.0/dist/showdown.min.js"></script>
@@ -92,7 +104,7 @@
                     </router-link>
                 </div>
                 <div id="back-to-top-button" title="Back to top" onclick="scrollToTop()">
-                    <i class="fa fa-arrow-up"></i>
+                    <i class="icon icon-up-thin"></i>
                 </div>
                 <div id="next-post"
                     v-bind:style="{ visibility: next != undefined ? 'visible' : 'hidden' }" >
@@ -140,7 +152,7 @@
     </template>
     <template id="page-not-found" data-autoregister-props="articles">
         <main>
-            <h3>Run!</h3>
+            <h3>404</h3>
             <img src="resources/here_be_dragons.png"/>
         </main>
     </template>
@@ -155,10 +167,10 @@
             </h3>
             <div v-html="profile.description"></div>
             <ul class="horizontal icon-list">
-                    <li><a target="_blank" v-bind:href="profile.linkTwitter"><i class="fab fa-twitter"></i></a></li>
-                    <li><a target="_blank" v-bind:href="profile.linkGithub"><i class="fab fa-github"></i></a></li>
-                    <li><a target="_blank" v-bind:href="profile.linkSO"><i class="fab fa-stack-overflow"></i></a></li>
-                    <li><a target="_blank" v-bind:href="profile.linkEmail"><i class="fa fa-envelope"></i></a></li>
+                    <li><a target="_blank" v-bind:href="profile.linkTwitter"><i class="icon icon-twitter"></i></a></li>
+                    <li><a target="_blank" v-bind:href="profile.linkGithub"><i class="icon icon-github-circled"></i></a></li>
+                    <li><a target="_blank" v-bind:href="profile.linkSO"><i class="icon icon-stackoverflow"></i></a></li>
+                    <li><a target="_blank" v-bind:href="profile.linkEmail"><i class="icon icon-email"></i></a></li>
                 </ul>
         </aside>
         <router-view class="view"></router-view>

@@ -153,7 +153,15 @@ function initShowdown() {
 }
 
 function rerenderPage() {
-    document.querySelectorAll('pre code').forEach((block) => {
+    // Update twitter meta title; TODO: do that with vue instead of manually
+    const activeArticle = model.getArticleAndNeighboursByUrl(location.href).article;
+    const metaTag = document.querySelector("[name='twitter:title']");
+    if (activeArticle) {
+        metaTag.attributes["content"] = activeArticle.title;
+    } else {
+        metaTag.attributes["content"] = "Main page";
+    }
+    document.querySelectorAll("pre code").forEach((block) => {
         hljs.highlightBlock(block);
     });
     if (MathJax.Hub) {
