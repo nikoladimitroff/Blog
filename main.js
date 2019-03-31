@@ -198,8 +198,7 @@ function main() {
 
     // Update the presentation properties on resize
     const computeLandscapeness = function () {
-        const portraitWidth = 768;
-        model.presentation.isScreenLandscape = window.innerWidth > portraitWidth;
+        model.presentation.isScreenLandscape = window.matchMedia("(orientation: landscape)").matches;
     };
     window.addEventListener("resize", computeLandscapeness);
     computeLandscapeness();

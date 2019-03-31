@@ -4,7 +4,27 @@
 @quote-text-color: #777777;
 @quote-border-color: #ddd;
 @header-font-family: Verdana;
-@text-font-family: "Segoe UI";
+@font-face {
+    font-family: 'Open Sans';
+    src: url('../resources/fonts/OpenSans-Regular.ttf');
+}
+@font-face {
+    font-family: "Open Sans";
+    src: url('../resources/fonts/OpenSans-Bold.ttf');
+    font-weight: bold;
+}
+@font-face {
+    font-family: "Open Sans";
+    src: url('../resources/fonts/OpenSans-Italic.ttf');
+    font-style: italic;
+}
+@font-face {
+    font-family: "Open Sans";
+    src: url('../resources/fonts/OpenSans-BoldItalic.ttf');
+    font-weight: bold;
+    font-style: italic;
+}
+@text-font-family: "Open Sans";
 @aside-border: 1px solid @basic-text-color;
 @main-section-width: 700px;
 @profile-section-width: 300px;
@@ -165,19 +185,46 @@ article {
 }
 
 /* Mobile */
-@media (max-width: 768px) {
+@media screen and (max-width: 768px),
+    screen and (max-width: 1441px) and (orientation: portrait) {
     aside {
         border-right: none;
         border-bottom: @aside-border;
         max-width: none;
+        flex: 50%;
     }
     #profile-photo {
-        width: 30%;
+        width: 50%;
         transform: translate(-50%, 0);
         position: relative;
         left: 50%;
     }
     #main-link {
         text-align: center;
+    }
+
+    .article-container, #main-page-list, aside {
+        max-width: none;
+        min-width: none;
+        margin-left: 2.5vw;
+        margin-right: 2.5vw;
+    }
+    aside {
+        padding: 0;
+        h3 {
+            font-size: 2rem;
+        }
+        div {
+            font-size: 1.75rem;
+        }
+        div, h3 {
+            text-align: center;
+        }
+        ul.horizontal {
+            justify-content: space-around;
+        }
+    }
+    #vue-container {
+        padding-top: 2.5vw;
     }
 }
