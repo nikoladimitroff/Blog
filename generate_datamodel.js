@@ -53,7 +53,7 @@ function main() {
         .map(f => generateArticleInfo(f))
         .sort(dateStringComparator);
     const scriptContent = "window.globalArticleIndex = " + JSON.stringify(articleIndex);
-    fs.writeFileSync("posts/articleIndex.js", scriptContent, { encoding: "utf8"});
+    fs.writeFileSync("generated/articleIndex.js", scriptContent, { encoding: "utf8"});
 }
 
 main();
