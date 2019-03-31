@@ -1,6 +1,8 @@
 /* Theme */
 @basic-text-color: black;
 @basic-background-color: snow;
+@quote-text-color: #777777;
+@quote-border-color: #ddd;
 @header-font-family: Verdana;
 @text-font-family: "Segoe UI";
 @aside-border: 1px solid @basic-text-color;
@@ -24,6 +26,13 @@ img {
     width: 100%;
 }
 
+blockquote {
+    color: #777777;
+    border-left: 5px solid #dddddd;
+    margin: 15px 30px 0px 10px;
+    padding-left: 20px;
+}
+
 
 /* Common classes */
 ul.horizontal {
@@ -36,9 +45,42 @@ ul.horizontal {
     }
 }
 
+@font-face {
+    font-family: 'dimitroffbg_icon_pack';
+    src: url('resources/iconography/dimitroffbg_icon_pack.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.icon::before {
+    font-family: "dimitroffbg_icon_pack";
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+    width: 1em;
+    margin-right: .2em;
+    text-align: center;
+
+    /* For safety - reset parent styles, that can break glyph codes*/
+    font-variant: normal;
+    text-transform: none;
+
+    /* Font smoothing. That was taken from TWBS */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.icon-stackoverflow:before { content: '\e800'; }
+.icon-github-circled:before { content: '\e801'; }
+.icon-email:before { content: '\e802'; }
+.icon-twitter:before { content: '\e803'; }
+.icon-up-thin:before { content: '\e804'; }
+
 .icon-list {
     li {
         font-size: 2rem;
+        a {
+            text-decoration: none;
+        }
     }
 }
 
