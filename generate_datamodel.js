@@ -25,7 +25,7 @@ var generateArticleInfo = function(file) {
     const articleTitle = path.basename(path.dirname(file));
     let preview = fileContent.substring(0, endOfFirstParagraph);
     // change the relative urls to point to the resources dir relative to the article
-    const articleUrl = encodeURIComponent(articleTitle.toLowerCase());
+    const articleUrl = encodeURIComponent(articleTitle);
     preview = preview.replace(/\(resources\//g, `(posts/${articleUrl}/resources/`);
 
     const metaFilePath = path.join(path.dirname(file), "meta.json");

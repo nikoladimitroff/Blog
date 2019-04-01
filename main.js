@@ -10,7 +10,7 @@ class Article {
         this.content = undefined;
     }
     get articleUrl() {
-        return encodeURIComponent(this.title.toLowerCase());
+        return encodeURIComponent(this.title);
     }
     get renderedContent() {
         return Article.converterInstance.makeHtml(this.content);
@@ -161,6 +161,9 @@ function rerenderPage() {
     } else {
         metaTag.attributes["content"] = "Main page";
     }
+    // Go back to the top because it's very confusing to a load a new article
+    // and start at the middle
+    scrollToTop();
     document.querySelectorAll("pre code").forEach((block) => {
         hljs.highlightBlock(block);
     });

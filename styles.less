@@ -166,7 +166,10 @@ article {
 #article-footer {
     display: flex;
     justify-content: space-between;
-    height: 5rem;
+    min-height: 5rem;
+    .icon {
+        font-size: 2rem;
+    }
 }
 #previous-post, #next-post, #back-to-top-button {
     top: 1rem;
@@ -187,6 +190,12 @@ article {
 /* Mobile */
 @media screen and (max-width: 768px),
     screen and (max-width: 1441px) and (orientation: portrait) {
+
+    #vue-container {
+        padding-top: 2.5vw;
+        padding-bottom: 2.5vw;
+    }
+
     aside {
         border-right: none;
         border-bottom: @aside-border;
@@ -224,7 +233,12 @@ article {
             justify-content: space-around;
         }
     }
-    #vue-container {
-        padding-top: 2.5vw;
+    .neighbour-post-button {
+        font-size: 1.75rem;
+    }
+    #previous-post, #next-post {
+        span {
+            font-size: 1.5rem;
+        }
     }
 }

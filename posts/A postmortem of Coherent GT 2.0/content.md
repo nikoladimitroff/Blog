@@ -153,4 +153,4 @@ My experience shows that these tips, summarized from the paragraphs above, can g
 * Try updating the third party regularly. This will increase the maintenance overhead but will allow you to rely on Git or another VCS to help with the merge.
 * If you have to manually apply changes, apply them per file, not per commit. Applying them commit per commit will lead you to duplicating some of the work (since a newer commit may be revert an older one) and also it's harder to stay focused because commits can touch multiple unrelated files.
 
-So that's it - I am interested in hearing how other people have solved the issues we encountered so if you are interested in sharing them put a comment below or find me on [twitter](https://twitter.com/nikoladimitroff).
+So that's it - I am interested in hearing how other people have solved the issues we encountered so if you are interested in sharing them put a comment below or find me on [Twitter](https://twitter.com/nikoladimitroff).

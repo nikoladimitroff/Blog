@@ -122,13 +122,17 @@
                 <span v-if="!article.meta.commentCollection">
                     Comments are disabled for this article.
                 </span>
-                <a class="twitter-timeline"
-                    data-partner="tweetdeck"
-                    data-chrome="transparent"
+                <!-- Set v-key in addition to v-if to force rerender and destroy the twitter widget -->
+                <span
                     v-if="article.meta.commentCollection"
-                    v-bind:href="article.meta.commentCollection">
-                    Comments for this article on Twitter.
-                </a>
+                    v-key="article.meta.commentCollection">
+                    <a class="twitter-timeline"
+                        data-partner="tweetdeck"
+                        data-chrome="transparent"
+                        v-bind:href="article.meta.commentCollection">
+                        Comments for this article on Twitter.
+                    </a>
+                </span>
             </div>
         </main>
     </template>
