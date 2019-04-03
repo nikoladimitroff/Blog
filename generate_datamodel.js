@@ -2,8 +2,10 @@ const path = require("path");
 const fs = require('fs');
 const os = require("os");
 
+const AUTHOR_INFO = "nikola@dimitroff.bg (Nikola Dimitroff)";
+
 // List all files in a directory in Node.js recursively in a synchronous fashion
-var walkSync = function(dir, extensions, filelist) {
+const walkSync = function(dir, extensions, filelist) {
     var files = fs.readdirSync(dir);
     filelist = filelist || [];
     files.forEach(function(file) {
@@ -18,7 +20,7 @@ var walkSync = function(dir, extensions, filelist) {
     return filelist;
 };
 
-var generateArticleInfo = function(file) {
+const generateArticleInfo = function(file) {
     const stat = fs.statSync(file);
     const fileContent = fs.readFileSync(file, { encoding: "utf8"});
     const endOfFirstParagraph = fileContent.indexOf(os.EOL + os.EOL);
@@ -42,18 +44,67 @@ var generateArticleInfo = function(file) {
     };
 }
 
-var dateStringComparator = function (article1, article2) {
+const dateStringComparator = function (article1, article2) {
     const d1 = new Date(article1.publishDate);
     const d2 = new Date(article2.publishDate);
     return d2 - d1;
 }
 
+
+const articleTitleToUrl = function (title) {
+    const uri = encodeURIComponent(title);
+    return `https://dimitroff.bg/#/article/${uri}`;
+};
+
+// From https://gist.github.com/samhernandez/5260558
+const jsDateToRssDate = function (date) {
+    var pieces     = date.toString().split(' '),
+        offsetTime = pieces[5].match(/[-+]\d{4}/),
+        offset     = (offsetTime) ? offsetTime : pieces[5],
+        parts      = [
+          pieces[0] + ',',
+          pieces[2],
+          pieces[1],
+          pieces[3],
+          pieces[4],
+          offset
+        ];
+
+    return parts.join(' ');
+};
+
+const articleInfoToRSSItem = function (article) {
+    return `
+  <item>
+    <title>${article.title}</title>
+    <link>${articleTitleToUrl(article.title)}</link>
+    <guid isPermaLink="true">${articleTitleToUrl(article.title)}</guid>
+    <description>${article.preview}</description>
+    <pubDate>${jsDateToRssDate(article.publishDate)}</pubDate>
+    <author>${AUTHOR_INFO}</author>
+  </item>`;
+}
+
+const generateRSSFeed = function (templateContent, articleIndex) {
+    const itemXml = articleIndex.map(articleInfoToRSSItem).join("");
+    let feed = templateContent.replace(/\s*<!-- ITEMS PLACEHOLDER -->/g, itemXml);
+    feed = feed.replace(/LAST_BUILD_DATE/g, jsDateToRssDate(new Date()));
+    return feed;
+};
+
 function main() {
     const articleIndex = walkSync("posts", [".md"])
         .map(f => generateArticleInfo(f))
         .sort(dateStringComparator);
+
+    const fileOptions = { encoding: "utf8" };
     const scriptContent = "window.globalArticleIndex = " + JSON.stringify(articleIndex);
-    fs.writeFileSync("generated/articleIndex.js", scriptContent, { encoding: "utf8"});
+    fs.writeFileSync("generated/articleIndex.js", scriptContent, fileOptions);
+
+    const rssTemplate = fs.readFileSync("rss_template.xml", fileOptions);
+    const rssContent = generateRSSFeed(rssTemplate, articleIndex);
+    fs.writeFileSync("rss", rssContent);
+    fs.writeFileSync("feed", rssContent);
 }
 
 main();
