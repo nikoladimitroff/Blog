@@ -23,7 +23,10 @@ const walkSync = function(dir, extensions, filelist) {
 const generateArticleInfo = function(file) {
     const stat = fs.statSync(file);
     const fileContent = fs.readFileSync(file, { encoding: "utf8"});
-    const endOfFirstParagraph = fileContent.indexOf(os.EOL + os.EOL);
+    const paragraphEndRegex = /\n\s*\n/; // Two consecutive line endings;
+    const paragraphEndMatch = paragraphEndRegex.exec(fileContent);
+    console.assert(paragraphEndMatch, "First paragraph not found!");
+    const endOfFirstParagraph = paragraphEndMatch.index;
     const articleTitle = path.basename(path.dirname(file));
     let preview = fileContent.substring(0, endOfFirstParagraph);
     // change the relative urls to point to the resources dir relative to the article

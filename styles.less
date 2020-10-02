@@ -66,14 +66,14 @@ ul.horizontal {
 }
 
 @font-face {
-    font-family: 'dimitroffbg_icon_pack';
-    src: url('../resources/iconography/dimitroffbg_icon_pack.woff') format('woff');
+    font-family: 'icomoon';
+    src: url('../resources/iconography/icomoon.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
 
 .icon::before {
-    font-family: "dimitroffbg_icon_pack";
+    font-family: "icomoon";
     font-style: normal;
     font-weight: normal;
     text-decoration: inherit;
@@ -93,7 +93,9 @@ ul.horizontal {
 .icon-github-circled:before { content: '\e801'; }
 .icon-email:before { content: '\e802'; }
 .icon-twitter:before { content: '\e803'; }
-.icon-up-thin:before { content: '\e804'; }
+.icon-up:before { content: '\e804'; }
+.icon-left:before { content: '\e805'; }
+.icon-home:before { content: '\e806'; }
 
 .icon-list {
     li {
@@ -165,6 +167,9 @@ aside {
 article {
     width: 100%;
 }
+#article-title-heading {
+    margin-top: 0.2em;
+}
 #article-footer {
     display: flex;
     justify-content: space-between;
@@ -185,9 +190,19 @@ article {
 .neighbour-post-button {
     font-size: 1.2rem;
 }
-#back-to-top-button {
+#back-to-top-button, #back-to-home-button {
     cursor: pointer;
+    color: @basic-text-color;
 }
+#back-to-home-button {
+    font-size: 1.4em;
+    text-decoration: none;
+}
+#back-to-home-button:hover {
+    color: @basic-text-color;
+    text-decoration: none;
+}
+
 
 /* Mobile */
 @media screen and (max-width: 768px),

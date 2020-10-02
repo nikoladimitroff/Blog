@@ -1,16 +1,6 @@
 <!doctype HTML>
 <html>
 <head>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-137695859-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'UA-137695859-1');
-    </script>
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- SEO -->
@@ -34,6 +24,19 @@
     <!-- Vue -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.6/dist/vue.min.js"></script>
     <script src="https://unpkg.com/vue-router@3.0.2/dist/vue-router.min.js"></script>
+    <script>
+        // Define module and exports to get access to vue analytics as I adding webpack/another
+        // web loader is atm out of scope
+        window.module = {};
+        window.exports = {};
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-gtag"></script>
+    <script>
+        // Undefine module and exports in order not to break other libraries
+        const VueGTag = window.exports;
+        window.module = undefined;
+        window.exports = undefined;
+    </script>
 
     <!-- Markdown parser-->
     <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.0/dist/showdown.min.js"></script>
@@ -85,7 +88,14 @@
 <body>
     <template id="article-display" data-autoregister-props="article previous next">
         <main class="article-container">
-            <h1>{{ article.title }}</h1>
+            <router-link
+                title="Back to all posts"
+                id="back-to-home-button"
+                to="/"
+                >
+                    <i class="icon icon-left"></i>
+            </router-link>
+            <h1 id="article-title-heading">{{ article.title }}</h1>
             <div>
                 <span class="date-display">Published:</span>
                 <span class="date-display">
@@ -115,7 +125,7 @@
                     </router-link>
                 </div>
                 <div id="back-to-top-button" title="Back to top" onclick="scrollToTop()">
-                    <i class="icon icon-up-thin"></i>
+                    <i class="icon icon-up"></i>
                 </div>
                 <div id="next-post"
                     v-bind:style="{ visibility: next != undefined ? 'visible' : 'hidden' }" >
@@ -191,5 +201,7 @@
         <router-view class="view"></router-view>
     </div>
     <script src="main.js"></script>
+    <script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+    <script async src="//embed.redditmedia.com/widgets/platform.js" charset="UTF-8"></script>
 </body>
 </html>

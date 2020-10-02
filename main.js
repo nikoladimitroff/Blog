@@ -13,10 +13,21 @@ class Article {
         return encodeURIComponent(this.title);
     }
     get renderedContent() {
-        return Article.converterInstance.makeHtml(this.content);
+        if (!this.content) {
+            return "";
+        }
+        const html = Article.converterInstance.makeHtml(this.content);
+        return this.fixLocalLinks(html);
     }
     get renderedPreview() {
         return Article.converterInstance.makeHtml(this.preview);
+    }
+    // Finds any local links on the page (e.g. #header1) and replaces them with the correct Vue router URL
+    // Not doing that causes local links to break navigation and cause 404 when loaded directly
+    fixLocalLinks(html) {
+        let regex = /<a href=["|']#(.*?)["|']/gm;
+        let withFixedLinks = html.replace(regex, "<a href='#/article/" + this.articleUrl + "/$1'");
+        return withFixedLinks;
     }
     static fromDescriptor(descriptor) {
         return new Article(descriptor.title,
@@ -78,13 +89,13 @@ let model = {
         const encodedUrl = encodeURIComponent(url);
         return this.articles.find(a => a.articleUrl === encodedUrl);
     },
-    getArticleAndNeighboursByUrl: function (url) {
+    getArticleInfoFromURL: function (url) {
         const encodedUrl = encodeURIComponent(url);
         const index = this.articles.findIndex(a => a.articleUrl === encodedUrl);
         return {
             article: this.articles[index],
             previous: this.articles[index - 1],
-            next: this.articles[index + 1]
+            next: this.articles[index + 1],
         };
     },
     loadArticle: async function (article) {
@@ -107,6 +118,28 @@ const onDisplayArticle = (to, from, next) => {
     }
 };
 
+const onUpdateArticle = (to, from, next) => {
+    const article = model.getArticleByUrl(to.params.url);
+    if (!article) {
+        next("/page-not-found");
+    } else {
+        model.loadArticle(article);
+        //scrollToRequestedSection();
+        next();
+    }
+};
+
+const scrollToRequestedSection = () => {
+    const sectionToScrollTo = app.$router.currentRoute.params.scrollTo;
+    const section = document.getElementById(sectionToScrollTo);
+    if (section) {
+        section.scrollIntoView();
+    } else {
+        scrollToTop();
+    }
+};
+
+
 const onLoadMainList = (to, from, next) => {
     setTimeout(rerenderPage, 0);
     next();
@@ -115,7 +148,7 @@ const onLoadMainList = (to, from, next) => {
 const ComponentRouting = {
     "article-display": {
         beforeRouteUpdate: onDisplayArticle,
-        beforeRouteEnter: onDisplayArticle
+        beforeRouteEnter: onDisplayArticle,
     },
     "article-list": {
         beforeRouteUpdate: onLoadMainList,
@@ -154,16 +187,15 @@ function initShowdown() {
 
 function rerenderPage() {
     // Update twitter meta title; TODO: do that with vue instead of manually
-    const activeArticle = model.getArticleAndNeighboursByUrl(location.href).article;
+    const currentArticleURL = app.$router.currentRoute.params.url;
+    const activeArticle = model.getArticleInfoFromURL(currentArticleURL).article;
     const metaTag = document.querySelector("[name='twitter:title']");
     if (activeArticle) {
         metaTag.attributes["content"] = activeArticle.title;
     } else {
         metaTag.attributes["content"] = "Main page";
     }
-    // Go back to the top because it's very confusing to a load a new article
-    // and start at the middle
-    scrollToTop();
+    scrollToRequestedSection();
     document.querySelectorAll("pre code").forEach((block) => {
         hljs.highlightBlock(block);
     });
@@ -184,7 +216,11 @@ function main() {
         routes: [{
                 path: "/article/:url",
                 component: Vue.options.components["article-display"],
-                props: (router) => model.getArticleAndNeighboursByUrl(router.params.url),
+                props: (router) => model.getArticleInfoFromURL(router.params.url),
+            },{
+                path: "/article/:url/:scrollTo",
+                component: Vue.options.components["article-display"],
+                props: (router) => model.getArticleInfoFromURL(router.params.url),
             },{
                 path: "",
                 component: Vue.options.components["article-list"],
@@ -206,6 +242,8 @@ function main() {
     window.addEventListener("resize", computeLandscapeness);
     computeLandscapeness();
 
+    const GOOGLE_ID = 'UA-137695859-1';
+    Vue.use(VueGTag, { config: { id: GOOGLE_ID } }, router);
     window.app = new Vue({
         el: "#vue-container",
         data: model,
