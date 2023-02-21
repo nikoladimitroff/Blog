@@ -7,16 +7,16 @@ class Article {
         this.publishDate = publishDate;
         this.lastEditDate = lastEditDate;
         this.meta = meta;
-        this.content = undefined;
+        this.content = Vue.ref(undefined);
     }
     get articleUrl() {
         return encodeURIComponent(this.title);
     }
     get renderedContent() {
-        if (!this.content) {
+        if (!this.content.value) {
             return "";
         }
-        const html = Article.converterInstance.makeHtml(this.content);
+        const html = Article.converterInstance.makeHtml(this.content.value);
         return this.fixLocalLinks(html);
     }
     get renderedPreview() {
@@ -99,10 +99,10 @@ let model = {
         };
     },
     loadArticle: async function (article) {
-        if (!article.content) {
+        if (!article.content.value) {
              const markdown = await loadFile("/posts/" + article.articleUrl + "/content.md");
              // change the relative urls to point to the resources dir relative to the article
-             article.content = markdown.replace(/\(resources\//g, `(posts/${article.articleUrl}/resources/`);
+             article.content.value = markdown.replace(/\(resources\//g, `(posts/${article.articleUrl}/resources/`);
         }
         setTimeout(rerenderPage, 0);
     }
@@ -162,7 +162,7 @@ const ComponentRouting = {
     }
 }
 
-function registerComponents() {
+function registerComponents(app) {
     const templates = document.querySelectorAll("template");
     for (const template of templates) {
         const props = template.dataset.autoregisterProps.split(" ") || "";
@@ -171,7 +171,7 @@ function registerComponents() {
             template: template.innerHTML,
         };
         ComponentRouting.addRoutesToComponent(template.id, descriptor);
-        Vue.component(template.id, descriptor);
+        app.component(template.id, descriptor);
     }
 }
 
@@ -187,7 +187,7 @@ function initShowdown() {
 
 function rerenderPage() {
     // Update twitter meta title; TODO: do that with vue instead of manually
-    const currentArticleURL = app.$router.currentRoute.params.url;
+    const currentArticleURL = window.router.currentRoute.value.params.url;
     const activeArticle = model.getArticleInfoFromURL(currentArticleURL).article;
     const metaTag = document.querySelector("[name='twitter:title']");
     if (activeArticle) {
@@ -195,45 +195,47 @@ function rerenderPage() {
     } else {
         metaTag.attributes["content"] = "Main page";
     }
-    scrollToRequestedSection();
+    //scrollToRequestedSection();
     document.querySelectorAll("pre code").forEach((block) => {
         hljs.highlightBlock(block);
     });
     if (MathJax.Hub) {
         MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
     }
-    if (twttr.widgets) {
-        twttr.widgets.load(document.getElementById("comment-section"));
-    }
 }
 
 function main() {
-    Vue.config.devtools = true;
+    const app = Vue.createApp({ props: Object.keys(model) }, model);
+    if (!window.location.href.includes("dimitroff.bg")) {
+        app.config.devtools = true;
+    }
     initShowdown();
-    registerComponents();
+    registerComponents(app);
 
-    const router = new VueRouter({
+    const router = VueRouter.createRouter({
+        history: VueRouter.createWebHashHistory(),
         routes: [{
                 path: "/article/:url",
-                component: Vue.options.components["article-display"],
+                component: app.component("article-display"),
                 props: (router) => model.getArticleInfoFromURL(router.params.url),
             },{
                 path: "/article/:url/:scrollTo",
-                component: Vue.options.components["article-display"],
+                component: app.component("article-display"),
                 props: (router) => model.getArticleInfoFromURL(router.params.url),
             },{
                 path: "",
-                component: Vue.options.components["article-list"],
+                component: app.component("article-list"),
                 props: { articles: model.articles }
             }, {
                 path: "/page-not-found",
-                component: Vue.options.components["page-not-found"],
+                component: app.component("page-not-found"),
             }, {
-                path: "*",
+                path: "/:pathMatch(.*)*",
                 redirect: "/page-not-found"
             }
         ]
     });
+    app.use(router);
 
     // Update the presentation properties on resize
     const computeLandscapeness = function () {
@@ -242,13 +244,11 @@ function main() {
     window.addEventListener("resize", computeLandscapeness);
     computeLandscapeness();
 
-    const GOOGLE_ID = 'UA-137695859-1';
-    Vue.use(VueGTag, { config: { id: GOOGLE_ID } }, router);
-    window.app = new Vue({
-        el: "#vue-container",
-        data: model,
-        router: router
-    });
+    const GOOGLE_ID = 'G-5BKE1B1TPL';
+    app.use(VueGtag, { config: { id: GOOGLE_ID } });
+    app.mount("#vue-container");
+    window.app = app;
+    window.router = router;
 }
 
 document.addEventListener("DOMContentLoaded", main);

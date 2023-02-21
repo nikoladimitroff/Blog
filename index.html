@@ -22,21 +22,9 @@
     <link rel="icon" type="image/png" href="resources/favicon16.png" sizes="16x16" />
 
     <!-- Vue -->
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.6/dist/vue.min.js"></script>
-    <script src="https://unpkg.com/vue-router@3.0.2/dist/vue-router.min.js"></script>
-    <script>
-        // Define module and exports to get access to vue analytics as I adding webpack/another
-        // web loader is atm out of scope
-        window.module = {};
-        window.exports = {};
-    </script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue-router@4.1.6/dist/vue-router.global.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-gtag"></script>
-    <script>
-        // Undefine module and exports in order not to break other libraries
-        const VueGTag = window.exports;
-        window.module = undefined;
-        window.exports = undefined;
-    </script>
 
     <!-- Markdown parser-->
     <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.0/dist/showdown.min.js"></script>
@@ -63,25 +51,6 @@
       </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML" async></script>
 
-    <!-- Twitter (as described here: https://developer.twitter.com/en/docs/twitter-for-websites/javascript-api/guides/set-up-twitter-for-websites) -->
-    <script>
-        window.twttr = (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0],
-        t = window.twttr || {};
-        if (d.getElementById(id)) return t;
-        js = d.createElement(s);
-        js.id = id;
-        js.src = "https://platform.twitter.com/widgets.js";
-        fjs.parentNode.insertBefore(js, fjs);
-
-        t._e = [];
-        t.ready = function(f) {
-        t._e.push(f);
-        };
-
-        return t;
-        }(document, "script", "twitter-wjs"));
-    </script>
     <!-- Data file; contains basic info about all available articles -->
     <script src="generated/articleIndex.js"></script>
 </head>
@@ -97,12 +66,12 @@
             </router-link>
             <h1 id="article-title-heading">{{ article.title }}</h1>
             <div>
-                <span class="date-display">Published:</span>
+                <span class="date-display">Published:   </span>
                 <span class="date-display">
                     {{ article.publishDate.toLocaleDateString("en-UK", { year: 'numeric', month: 'long', day: 'numeric' }) }}
                 </span>
                 <br/>
-                <span class="date-display">Last edited:</span>
+                <span class="date-display">Last edited: </span>
                 <span class="date-display">
                     {{ article.lastEditDate.toLocaleDateString("en-UK", { year: 'numeric', month: 'long', day: 'numeric' }) }}
                 </span>
@@ -139,21 +108,11 @@
                     </router-link>
                 </div>
             </div>
-            <div id="comment-section">
-                <span v-if="!article.meta.commentCollection">
-                    Comments are disabled for this article.
-                </span>
-                <!-- Set v-key in addition to v-if to force rerender and destroy the twitter widget -->
-                <span
-                    v-if="article.meta.commentCollection"
-                    v-key="article.meta.commentCollection">
-                    <a class="twitter-timeline"
-                        data-partner="tweetdeck"
-                        data-chrome="transparent"
-                        v-bind:href="article.meta.commentCollection">
-                        Comments for this article on Twitter.
-                    </a>
-                </span>
+            <div id="comment-section"
+                v-if="article.meta.commentCollection"
+                v-key="article.meta.commentCollection"
+                >
+                Use Twitter to comment: <a v-bind:href="article.meta.commentCollection">Thread</a>
             </div>
         </main>
     </template>
